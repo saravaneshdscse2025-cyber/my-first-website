@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>E-Commerce Portal</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+  nav { background: #0073e6; padding: 10px; }
+  nav ul { list-style: none; margin: 0; padding: 0; display: flex; }
+  nav li { margin: 0 15px; }
+  nav a { color: white; text-decoration: none; font-weight: bold; }
+  nav a:hover { text-decoration: underline; }
+  .container { padding: 20px; max-width: 900px; margin: auto; }
+  h2 { color: #0073e6; }
+  form { margin-bottom: 20px; }
+  label { display: block; margin-top: 10px; }
+  input[type="text"], input[type="email"], input[type="password"], textarea {
+    width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box;
+  }
+  .error { color: red; font-size: 0.9em; }
+  ul { padding-left: 20px; }
+  .product-img { width: 50px; vertical-align: middle; margin-right: 10px; }
+  .section { margin-bottom: 40px; border-bottom: 1px solid #ddd; padding-bottom: 20px; }
+  button { background: #0073e6; color: white; border: none; padding: 10px 20px; cursor: pointer; margin-top: 10px; }
+  button:hover { background: #005bb5; }
+</style>
+</head>
+<body>
+
+<nav>
+  <ul>
+    <li><a href="#home" onclick="showSection('home')">Home</a></li>
+    <li><a href="#products" onclick="showSection('products')">Product Items</a></li>
+    <li><a href="#contact" onclick="showSection('contact')">Contact Us</a></li>
+    <li><a href="#about" onclick="showSection('about')">About Us</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <!-- Home Section -->
+  <div id="home" class="section">
+    <h2>Welcome to Our E-Commerce Portal</h2>
+    <p>Shop for your favorite products with ease!</p>
+  </div>
+
+  <!-- Products Section -->
+  <div id="products" class="section" style="display:none;">
+    <h2>Product Items</h2>
+    <ul>
+      <li><img class="product-img" src="https://via.placeholder.com/50" alt="Laptop"> Laptop</li>
+      <li><img class="product-img" src="https://via.placeholder.com/50" alt="Phone"> Phone</li>
+      <li><img class="product-img" src="https://via.placeholder.com/50" alt="Headphones"> Headphones</li>
+    </ul>
+  </div>
+
+  <!-- Contact Us Section -->
+  <div id="contact" class="section" style="display:none;">
+    <h2>Contact Us</h2>
+    <p>Email: support@ecommerce.com</p>
+    <p>Phone: +123 456 7890</p>
+  </div>
+
+  <!-- About Us Section -->
+  <div id="about" class="section" style="display:none;">
+    <h2>About Us</h2>
+    <p>We provide you the best shopping experience on the web.</p>
+  </div>
+
+  <!-- Registration Form -->
+  <div class="section">
+    <h2>User Registration</h2>
+    <form id="registerForm" onsubmit="return validateRegistration()">
+      <label>Name:</label>
+      <input type="text" id="regName" />
+      <span id="errorName" class="error"></span>
+
+      <label>Email:</label>
+      <input type="email" id="regEmail" />
+      <span id="errorEmail" class="error"></span>
+
+      <label>Password:</label>
+      <input type="password" id="regPassword" />
+      <span id="errorPassword" class="error"></span>
+
+      <button type="submit">Register</button>
+    </form>
+  </div>
+
+  <!-- Login Form -->
+  <div class="section">
+    <h2>User Login</h2>
+    <form id="loginForm" onsubmit="return validateLogin()">
+      <label>Email:</label>
+      <input type="email" id="loginEmail" />
+      <span id="loginErrorEmail" class="error"></span>
+
+      <label>Password:</label>
+      <input type="password" id="loginPassword" />
+      <span id="loginErrorPassword" class="error"></span>
+
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <!-- Orders List -->
+  <div class="section">
+    <h2>Orders List</h2>
+    <ul id="ordersList">
+      <li><img class="product-img" src="https://via.placeholder.com/50" alt="Laptop"> Laptop - Delivered</li>
+      <li><img class="product-img" src="https://via.placeholder.com/50" alt="Phone"> Phone - Pending</li>
+    </ul>
+  </div>
+
+  <!-- Wishlist -->
+  <div class="section">
+    <h2>Wishlist</h2>
+    <ul id="wishlist">
+      <li><img class="product-img" src="https://via.placeholder.com/50" alt="Headphones"> Headphones</li>
+      <li><img class="product-img" src="https://via.placeholder.com/50" alt="Smartwatch"> Smartwatch</li>
+    </ul>
+  </div>
+
+  <!-- Comments & Reviews -->
+  <div class="section">
+    <h2>Comments & Reviews</h2>
+    <ul id="reviewsList">
+      <li>Good quality!</li>
+      <li>Fast delivery.</li>
+    </ul>
+    <form id="reviewForm" onsubmit="return addReview()">
+      <textarea id="reviewInput" placeholder="Write a review" rows="3" style="width:100%;"></textarea>
+      <button type="submit">Add Review</button>
+    </form>
+  </div>
+
+  <!-- Customer Care -->
+  <div class="section">
+    <h2>Customer Care</h2>
+    <p>Email: customercare@ecommerce.com</p>
+    <p>Phone: +123 987 6543</p>
+  </div>
+
+  <!-- Reporting Options -->
+  <div class="section">
+    <h2>Report an Issue</h2>
+    <form id="reportForm" onsubmit="return submitReport()">
+      <textarea id="reportInput" placeholder="Describe the issue" rows="3" style="width:100%;"></textarea>
+      <button type="submit">Submit Report</button>
+    </form>
+  </div>
+
+</div>
+
+<script>
+  function showSection(id) {
+    const sections = ['home', 'products', 'contact', 'about'];
+    sections.forEach(section => {
+      document.getElementById(section).style.display = (section === id) ? 'block' : 'none';
+    });
+  }
+
+  // Registration Validation
+  function validateRegistration() {
+    let valid = true;
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const password = document.getElementById('regPassword').value;
+
+    document.getElementById('errorName').textContent = '';
+    document.getElementById('errorEmail').textContent = '';
+    document.getElementById('errorPassword').textContent = '';
+
+    if (name.length < 3) {
+      document.getElementById('errorName').textContent = 'Name must be at least 3 characters';
+      valid = false;
+    }
+
+    const emailPattern = /S+@S+.S+/;
+    if (!emailPattern.test(email)) {
+      document.getElementById('errorEmail').textContent = 'Please enter a valid email';
+      valid = false;
+    }
+
+    if (password.length < 6) {
+      document.getElementById('errorPassword').textContent = 'Password must be at least 6 characters';
+      valid = false;
+    }
+
+    if (valid) alert('Registered Successfully!');
+    return valid;
+  }
+
+  // Login Validation
+  function validateLogin() {
+    let valid = true;
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    document.getElementById('loginErrorEmail').textContent = '';
+    document.getElementById('loginErrorPassword').textContent = '';
+
+    const emailPattern = /S+@S+.S+/;
+    if (!emailPattern.test(email)) {
+      document.getElementById('loginErrorEmail').textContent = 'Please enter a valid email';
+      valid = false;
+    }
+
+    if (password.length < 6) {
+      document.getElementById('loginErrorPassword').textContent = 'Password must be at least 6 characters';
+      valid = false;
+    }
+
+    if (valid) alert('Login Successful!');
+    return valid;
+  }
+
+  // Add Review
+  function addReview() {
+    const reviewText = document.getElementById('reviewInput').value.trim();
+    if (reviewText === '') {
+      alert('Please write a review before submitting.');
+      return false;
+    }
+    const ul = document.getElementById('reviewsList');
+    const li = document.createElement('li');
+    li.textContent = reviewText;
+    ul.appendChild(li);
+    document.getElementById('reviewInput').value = '';
+    return false; // Prevent form submission reload
+  }
+
+  // Submit Report
+  function submitReport() {
+    const reportText = document.getElementById('reportInput').value.trim();
+    if (reportText === '') {
+      alert('Please write a description of the issue.');
+      return false;
+    }
+    alert('Issue reported! Thank you.');
+    document.getElementById('reportInput').value = '';
+    return false;
+  }
+
+  // Show home section by default
+  showSection('home');
+</script>
+
+</body>
+</html>
